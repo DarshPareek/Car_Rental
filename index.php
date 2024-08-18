@@ -1,0 +1,401 @@
+<?php 
+session_start();
+include('includes/config.php');
+error_reporting(0);
+
+?>
+
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+
+<title>Car Rental Portal</title>
+<!--Bootstrap -->
+<link rel="stylesheet" href="assets/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="assets/css/style.css" type="text/css">
+<link rel="stylesheet" href="assets/css/owl.carousel.css" type="text/css">
+<link rel="stylesheet" href="assets/css/owl.transitions.css" type="text/css">
+<link href="assets/css/slick.css" rel="stylesheet">
+<link href="assets/css/bootstrap-slider.min.css" rel="stylesheet">
+<link href="assets/css/font-awesome.min.css" rel="stylesheet">
+		<link rel="stylesheet" id="switcher-css" type="text/css" href="assets/switcher/css/switcher.css" media="all" />
+		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/red.css" title="red" media="all" data-default-color="true" />
+		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/orange.css" title="orange" media="all" />
+		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/blue.css" title="blue" media="all" />
+		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/pink.css" title="pink" media="all" />
+		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/green.css" title="green" media="all" />
+		<link rel="alternate stylesheet" type="text/css" href="assets/switcher/css/purple.css" title="purple" media="all" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/images/favicon-icon/apple-touch-icon-144-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/images/favicon-icon/apple-touch-icon-114-precomposed.html">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/images/favicon-icon/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="assets/images/favicon-icon/apple-touch-icon-57-precomposed.png">
+<link rel="shortcut icon" href="assets/images/favicon-icon/favicon.png">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet"> 
+</head>
+<body>
+
+<!-- Start Switcher -->
+<!-- <?php include('includes/colorswitcher.php');?> -->
+<!-- /Switcher -->  
+        
+<!--Header-->
+<?php include('includes/header.php');?>
+<!-- /Header --> 
+
+<!-- Banners -->
+<div class="home">
+        <div class="main-sec">
+            <div class="left">
+                <h1 class="txt1">Easy And Fast Way To <span style="color: #FFAF00;">Rent</span> Your Car</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore accusamus nobis similique ab
+                    praesentium itaque dolore quidem debitis distinctio laborum!</p>
+                <div class="btn1">
+                    <input class="car" type="button" value="Rent Car">
+                </div>
+            </div>
+
+            <div class="right">
+                <img src="./porsche_PNG10624.png" alt="">
+            </div>
+        </div>
+    </div>
+<!-- /Banners --> 
+
+<style>
+  @font-face {
+    font-family: medium;
+    src: url(/font/PierSans-Regular.otf);
+}
+
+@font-face {
+    font-family: light;
+    src: url(/font/PierSans-Light.otf);
+}
+
+.home {
+    background-color: whitesmoke;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home .main-sec {
+    display: flex;
+    gap: 3vw;
+    /* background-color: red; */
+    justify-content: center;
+    align-items: center;
+}
+
+
+.home .right {
+    width: 400px;
+    height: 300px;
+    margin: 78px;
+    padding: 30px;
+    border-bottom-left-radius: 50%;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-image: linear-gradient(155deg, #ffd987, #ffe8b6);
+}
+
+
+.home .left {
+    padding: 30px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    /* align-items: center; */
+    gap: 20px;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+}
+
+.home .left .btn1 input {
+    padding: 14px 26px;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    margin-top: 16px;
+    cursor: pointer;
+    background-color: #FFAF00;
+}
+
+.home .main-sec .left .txt1 {
+    font-size: 3.5rem;
+    font-weight: 600;
+    font-family: light;
+    margin-bottom: 12px;
+}
+
+.home .main-sec .left p{
+    width: 75%;
+    line-height: 26px;
+    font-size: 16px;
+    font-family: light;
+    color: rgb(75, 74, 74);
+    font-weight: 100;
+}
+
+
+.home .right img {
+    width: 45vw;
+    filter: drop-shadow(20px 50px 25px #e3d5b3);
+}
+
+
+  </style>
+<!-- Resent Cat-->
+
+<section class="listing-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="result-sorting-wrapper">
+          <div class="sorting-count">
+<?php 
+//Query for Listing count
+$sql = "SELECT id from tblvehicles";
+$query = $dbh -> prepare($sql);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=$query->rowCount();
+?>
+<p><span><?php echo htmlentities($cnt);?> Listings</span></p>
+</div>
+</div>
+
+<?php $sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand";
+$query = $dbh -> prepare($sql);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{  ?>
+        <div class="product-listing-m gray-bg">
+          <div class="product-listing-img"><img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" class="img-responsive" alt="Image" /> </a> 
+          </div>
+          <div class="product-listing-content">
+            <h5><a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->BrandName);?> , <?php echo htmlentities($result->VehiclesTitle);?></a></h5>
+            <p class="list-price">₹<?php echo htmlentities($result->PricePerDay);?> Per Day</p>
+            <ul>
+              <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($result->SeatingCapacity);?> seats</li>
+              <li><i class="fa fa-calendar" aria-hidden="true"></i><?php echo htmlentities($result->ModelYear);?> model</li>
+              <li><i class="fa fa-car" aria-hidden="true"></i><?php echo htmlentities($result->FuelType);?></li>
+            </ul>
+            <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>" class="btn">View Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
+          </div>
+        </div>
+      <?php }} ?>
+         </div>
+      
+      <!--Side-Bar-->
+      <aside class="col-md-3 col-md-pull-9">
+        <div class="sidebar_widget">
+          <div class="widget_heading">
+            <h5><i class="fa fa-filter" aria-hidden="true"></i> Find Your  Car </h5>
+          </div>
+          <div class="sidebar_filter">
+            <form action="search-carresult.php" method="post">
+              <div class="form-group select">
+                <select class="form-control" name="brand">
+                  <option>Select Brand</option>
+
+                  <?php $sql = "SELECT * from  tblbrands ";
+$query = $dbh -> prepare($sql);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{       ?>  
+<option value="<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->BrandName);?></option>
+<?php }} ?>
+                 
+                </select>
+              </div>
+              <div class="form-group select">
+                <select class="form-control" name="fueltype">
+                  <option>Select Fuel Type</option>
+<option value="Petrol">Petrol</option>
+<option value="Diesel">Diesel</option>
+<option value="CNG">CNG</option>
+                </select>
+              </div>
+             
+              <div class="form-group">
+                <button type="submit" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Search Car</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="sidebar_widget">
+          <div class="widget_heading">
+            <h5><i class="fa fa-car" aria-hidden="true"></i> Recently Listed Cars</h5>
+          </div>
+          <div class="recent_addedcars">
+            <ul>
+<?php $sql = "SELECT tblvehicles.*,tblbrands.BrandName,tblbrands.id as bid  from tblvehicles join tblbrands on tblbrands.id=tblvehicles.VehiclesBrand order by id desc limit 4";
+$query = $dbh -> prepare($sql);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{  ?>
+
+              <li class="gray-bg">
+                <div class="recent_post_img"> <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>"><img src="admin/img/vehicleimages/<?php echo htmlentities($result->Vimage1);?>" alt="image"></a> </div>
+                <div class="recent_post_title"> <a href="vehical-details.php?vhid=<?php echo htmlentities($result->id);?>"><?php echo htmlentities($result->BrandName);?> , <?php echo htmlentities($result->VehiclesTitle);?></a>
+                  <p class="widget_price">$<?php echo htmlentities($result->PricePerDay);?> Per Day</p>
+                </div>
+              </li>
+              <?php }} ?>
+              
+            </ul>
+          </div>
+        </div>
+      </aside>
+      <!--/Side-Bar--> 
+    </div>
+  </div>
+</section>
+<!-- /Resent Cat --> 
+
+<!-- Fun Facts-->
+<section class="fun-facts-section">
+  <div class="container div_zindex">
+    <div class="row">
+      <div class="col-lg-3 col-xs-6 col-sm-3">
+        <div class="fun-facts-m">
+          <div class="cell">
+            <h2><i class="fa fa-calendar" aria-hidden="true"></i>40+</h2>
+            <p>Years In Business</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-xs-6 col-sm-3">
+        <div class="fun-facts-m">
+          <div class="cell">
+            <h2><i class="fa fa-car" aria-hidden="true"></i>1200+</h2>
+            <p>New Cars For Sale</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-xs-6 col-sm-3">
+        <div class="fun-facts-m">
+          <div class="cell">
+            <h2><i class="fa fa-car" aria-hidden="true"></i>1000+</h2>
+            <p>Used Cars For Sale</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-xs-6 col-sm-3">
+        <div class="fun-facts-m">
+          <div class="cell">
+            <h2><i class="fa fa-user-circle-o" aria-hidden="true"></i>600+</h2>
+            <p>Satisfied Customers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Dark Overlay-->
+  <div class="dark-overlay"></div>
+</section>
+<!-- /Fun Facts--> 
+
+
+<!--Testimonial -->
+<section class="section-padding testimonial-section parallex-bg">
+  <div class="container div_zindex">
+    <div class="section-header white-text text-center">
+      <h2>Our Satisfied <span>Customers</span></h2>
+    </div>
+    <div class="row">
+      <div id="testimonial-slider">
+<?php 
+$tid=1;
+$sql = "SELECT tbltestimonial.Testimonial,tblusers.FullName from tbltestimonial join tblusers on tbltestimonial.UserEmail=tblusers.EmailId where tbltestimonial.status=:tid limit 4";
+$query = $dbh -> prepare($sql);
+$query->bindParam(':tid',$tid, PDO::PARAM_STR);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{  ?>
+
+
+        <div class="testimonial-m">
+ 
+          <div class="testimonial-content">
+            <div class="testimonial-heading">
+              <h5><?php echo htmlentities($result->FullName);?></h5>
+            <p><?php echo htmlentities($result->Testimonial);?></p>
+          </div>
+        </div>
+        </div>
+        <?php }} ?>
+        
+       
+  
+      </div>
+    </div>
+  </div>
+  <!-- Dark Overlay-->
+  <div class="dark-overlay"></div>
+</section>
+<!-- /Testimonial--> 
+
+
+<!--Footer -->
+<?php include('includes/footer.php');?>
+<!-- /Footer--> 
+
+<!--Back to top-->
+<div id="back-top" class="back-top"> <a href="#top"><i class="fa fa-angle-up" aria-hidden="true"></i> </a> </div>
+<!--/Back to top--> 
+
+<!--Login-Form -->
+<?php include('includes/login.php');?>
+<!--/Login-Form --> 
+
+<!--Register-Form -->
+<?php include('includes/registration.php');?>
+
+<!--/Register-Form --> 
+
+<!--Forgot-password-Form -->
+<?php include('includes/forgotpassword.php');?>
+<!--/Forgot-password-Form --> 
+
+<!-- Scripts --> 
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.min.js"></script> 
+<script src="assets/js/interface.js"></script> 
+<!--Switcher-->
+<script src="assets/switcher/js/switcher.js"></script>
+<!--bootstrap-slider-JS--> 
+<script src="assets/js/bootstrap-slider.min.js"></script> 
+<!--Slider-JS--> 
+<script src="assets/js/slick.min.js"></script> 
+<script src="assets/js/owl.carousel.min.js"></script>
+
+</body>
+
+<!-- Mirrored from themes.webmasterdriver.net/carforyou/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 07:22:11 GMT -->
+</html>
