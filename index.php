@@ -47,8 +47,6 @@ error_reporting(0);
         <div class="main-sec">
             <div class="left">
                 <h1 class="txt1">Easy And Fast Way To <span style="color: #FFAF00;">Rent</span> Your Car</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore accusamus nobis similique ab
-                    praesentium itaque dolore quidem debitis distinctio laborum!</p>
                 <div class="btn1">
                     <input class="car" type="button" value="Rent Car">
                 </div>
